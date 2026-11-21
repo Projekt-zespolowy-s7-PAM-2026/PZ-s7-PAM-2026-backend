@@ -19,6 +19,23 @@
     networks:
       - michi-net
 
+  api:
+    build:
+      context: .
+      dockerfile: Michi.API/Dockerfile
+    container_name: michi-api
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: "http://+:8080"
+    ports:
+      - "${API_PORT:-9090}:8080"
+    networks:
+      - michi-net
+
   s3:
     image: rustfs/rustfs:latest
     container_name: michi-s3
