@@ -1,5 +1,7 @@
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Michi.API.Exceptions;
+
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -35,3 +37,4 @@ app.MapHealthChecks("/health/live", new HealthCheckOptions
 app.MapHealthChecks("/health/ready");
 
 app.Run();
+public partial class Program;
