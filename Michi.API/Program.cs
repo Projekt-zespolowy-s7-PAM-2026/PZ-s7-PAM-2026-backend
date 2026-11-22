@@ -1,4 +1,5 @@
 using Michi.API.Exceptions;
+using Michi.API.Identity.Extensions;
 
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
@@ -11,9 +12,10 @@ builder.Services.AddHealthChecks();
 builder.Services.AddValidation();
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddIdentityModule(builder.Configuration);
 
 var app = builder.Build();
-
+await app.InitializeIdentityAsync();
 app.UseExceptionHandler();
 app.UseHttpsRedirection();
 
