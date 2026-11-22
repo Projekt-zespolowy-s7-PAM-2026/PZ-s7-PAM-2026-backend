@@ -27,11 +27,37 @@
 
 ## Usługi lokalne i porty
 
-| Usługa | Obraz | Adres / Port | Domyślne dane dostępowe (`.env.example`) |
+| Usługa | Obraz / źródło | Adres / port | Domyślne dane dostępowe |
 | :--- | :--- | :--- | :--- |
-| **PostgreSQL + PostGIS** | `postgis/postgis:16-3.4` | `localhost:5432` | Baza: `michi_db`<br>User: `michi`<br>Hasło: `michi_pass` |
-| **RustFS (S3 Storage)** | `rustfs/rustfs:latest` | API: `http://localhost:9000`<br>Panel: `http://localhost:9001` | Login: `rustfsadmin`<br>Hasło: `rustfsadmin`<br>Bucket: `michi-dev-media` |
+| **Michi API** | Build z `Michi.API/Dockerfile` | API: `http://localhost:9090` | Brak |
+| **PostgreSQL + PostGIS** | `postgis/postgis:16-3.4` | `localhost:5432` | Baza: `michi_db`<br>Użytkownik: `michi`<br>Hasło: wartość `POSTGRES_PASSWORD` z `.env` |
+| **RustFS (S3 Storage)** | `rustfs/rustfs:latest` | API: `http://localhost:9000`<br>Panel: `http://localhost:9001` | Login: wartość `S3_ACCESS_KEY_ID` z `.env`<br>Hasło: wartość `S3_SECRET_ACCESS_KEY` z `.env` |
 | **Mailpit (SMTP / Web UI)** | `axllent/mailpit:latest` | SMTP: `localhost:1025`<br>Panel: `http://localhost:8025` | Brak autoryzacji |
+
+## API i dokumentacja
+
+API działa lokalnie pod adresem:
+
+```text
+http://localhost:9090
+```
+
+Endpointy diagnostyczne:
+
+| Endpoint | Opis                             |
+| :--- |:---------------------------------|
+| `GET /health/live` | Sprawdza, czy proces API działa. |
+| `GET /health/ready` | Punkt gotowości aplikacji.       |      
+
+W środowisku `Development` dostępna jest dokumentacja OpenAPI:
+
+| Narzędzie | Adres | Opis |
+| :--- | :--- | :--- |
+| OpenAPI JSON | [http://localhost:9090/openapi/v1.json](http://localhost:9090/openapi/v1.json) | Surowy dokument OpenAPI 3.1. |
+| Swagger UI | [http://localhost:9090/swagger](http://localhost:9090/swagger) | Interaktywny interfejs do przeglądania i testowania endpointów. |
+| Scalar | [http://localhost:9090/scalar/v1](http://localhost:9090/scalar/v1) | Alternatywny interaktywny interfejs dokumentacji API. |
+
+Dokumentacja OpenAPI, Swagger UI i Scalar są dostępne wyłącznie w środowisku `Development`.
 
 ### Pierwsza konfiguracja bucketa S3 (RustFS)
 

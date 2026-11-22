@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/tests/">
+    <Project Path="tests/Michi.API.IntegrationTests/Michi.API.IntegrationTests.csproj" />
+    <Project Path="tests/Michi.API.UnitTests/Michi.API.UnitTests.csproj" />
+  </Folder>
+  <Project Path="Michi.API/Michi.API.csproj" />
+</Solution>
+
