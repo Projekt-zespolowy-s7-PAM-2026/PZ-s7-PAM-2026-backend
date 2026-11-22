@@ -1,13 +1,12 @@
 ﻿using System.Net;
 
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Hosting;
 
 namespace Michi.API.IntegrationTests;
 
-public sealed class HealthTests(WebApplicationFactory<Program> factory)
-    : IClassFixture<WebApplicationFactory<Program>>
+public sealed class HealthTests(MichiWebApplicationFactory factory)
+    : IClassFixture<MichiWebApplicationFactory>
 {
     [Theory]
     [InlineData("/health/live")]
@@ -24,8 +23,7 @@ public sealed class HealthTests(WebApplicationFactory<Program> factory)
     [Fact]
     public async Task OpenApi_InDevelopment_ShouldReturnHttp200()
     {
-        var client = factory.WithWebHostBuilder(b => b.UseEnvironment(Environments.Development))
-            .CreateClient();
+        var client = factory.CreateClient();
 
         var response = await client.GetAsync("/openapi/v1.json");
 
@@ -35,7 +33,8 @@ public sealed class HealthTests(WebApplicationFactory<Program> factory)
     [Fact]
     public async Task OpenApi_InProduction_ShouldReturnNotFound()
     {
-        using var prodFactory = factory.WithWebHostBuilder(b => b.UseEnvironment(Environments.Production));
+        using var prodFactory = factory.WithWebHostBuilder(b =>
+            b.UseEnvironment(Environments.Production));
 
         var client = prodFactory.CreateClient();
         var response = await client.GetAsync("/openapi/v1.json");
