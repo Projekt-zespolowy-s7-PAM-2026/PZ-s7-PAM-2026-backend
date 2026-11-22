@@ -1,0 +1,35 @@
+
+name: CI
+
+on:
+  push:
+    branches:
+      - Issue-2
+      - main
+      - "feature/**"
+  pull_request:
+    branches:
+      - Issue-2
+
+jobs:
+  build-and-test:
+    name: Build and test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore Michi.slnx
+
+      - name: Build solution
+        run: dotnet build Michi.slnx --no-restore --configuration Release
+
+      - name: Run tests
+        run: dotnet test Michi.slnx --no-build --configuration Release
